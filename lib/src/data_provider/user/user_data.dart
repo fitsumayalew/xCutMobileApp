@@ -60,7 +60,7 @@ class UserDataProvider {
 
   deleteProfile() async {
     final response = await httpClient.delete(
-      Uri.http(_baseUrlUser, '/deleteProfile'),
+      '$_baseUrlUser/deleteProfile',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${TokenHandler.getToken()}'
@@ -95,7 +95,7 @@ class UserDataProvider {
 
   // reset password
   Future<User> updateProfile(String oldPassword, String password) async {
-    final response = await httpClient.put(Uri.http(_baseUrlUser, '/getProfile'),
+    final response = await httpClient.put('$_baseUrlUser/getProfile',
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${TokenHandler.getToken()}'
@@ -115,7 +115,7 @@ class UserDataProvider {
 
   addFavorite(barberShopId) async {
     final response = await httpClient.post(
-      Uri.http(_baseUrlUser, '/addFavorite/$barberShopId'),
+      '$_baseUrlUser/addFavorite/$barberShopId',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${TokenHandler.getToken()}'
@@ -132,7 +132,7 @@ class UserDataProvider {
 
   removeFavorite(barberShopId) async {
     final response = await httpClient.delete(
-      Uri.http(_baseUrlUser, '/removeFavorite/$barberShopId'),
+      '$_baseUrlUser/removeFavorite/$barberShopId',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${TokenHandler.getToken()}'
@@ -149,7 +149,7 @@ class UserDataProvider {
 
   setAppointment(barberShopId) async {
     final response = await httpClient.post(
-      Uri.http(_baseUrlUser, '/setAppointment/$barberShopId'),
+      '$_baseUrlUser/setAppointment/$barberShopId',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${TokenHandler.getToken()}'
@@ -166,7 +166,7 @@ class UserDataProvider {
 
   deleteAppointment(barberShopId) async {
     final response = await httpClient.delete(
-      Uri.http(_baseUrlUser, '/deleteAppointment/$barberShopId'),
+      '$_baseUrlUser/deleteAppointment/$barberShopId',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${TokenHandler.getToken()}'
@@ -184,7 +184,7 @@ class UserDataProvider {
   Future<List<BarberShop>> addReview(
       barberShopId, String message, int rating) async {
     final response = await httpClient.post(
-      Uri.http(_baseUrlUser, '/addReview/$barberShopId'),
+      '$_baseUrlUser/addReview/$barberShopId',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${TokenHandler.getToken()}'
@@ -205,7 +205,7 @@ class UserDataProvider {
 
   Future<List<BarberShop>> deleteReview(barberShopId) async {
     final response = await httpClient.post(
-      Uri.http(_baseUrlUser, '/deleteReview/$barberShopId'),
+      '$_baseUrlUser/deleteReview/$barberShopId',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${TokenHandler.getToken()}'

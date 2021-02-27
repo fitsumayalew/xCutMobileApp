@@ -18,6 +18,5 @@ class BarberShopSearch extends BarberShopEvent {
   const BarberShopSearch(this.searchValue);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [searchValue];
 }
-

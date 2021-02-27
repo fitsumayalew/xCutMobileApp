@@ -5,10 +5,11 @@ import 'package:xcut_frontend/src/models/barberShop.dart';
 class BarberShopRepository {
   final BarberShopDataProvider barberShopDataProvider;
 
-  BarberShopRepository({@required this.barberShopDataProvider}) : assert(barberShopDataProvider != null);
-  
+  BarberShopRepository({@required this.barberShopDataProvider})
+      : assert(barberShopDataProvider != null);
+
   Future<List<BarberShop>> getAllBarberShops() async {
-    return await barberShopDataProvider.getAllBarberShops();
+    return barberShopDataProvider.getAllBarberShops();
   }
 
   Future<List<BarberShop>> searchBarberShop(searchValue) async {

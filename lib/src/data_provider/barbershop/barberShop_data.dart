@@ -13,35 +13,27 @@ class BarberShopDataProvider {
       : assert(httpClient != null);
 
   Future<List<BarberShop>> getAllBarberShops() async {
-    try {
-      final response =
-          await httpClient.get('$_baseUrlBarberShop/getAllBarberShops');
-      final body = json.decode(response.body);
-      if (body['status']) {
-        return body['data']
-            .map<BarberShop>((e) => BarberShop.fromJSON(e))
-            .toList();
-      } else {
-        throw Exception('Failed to create course.');
-      }
-    } catch (e) {
-      print(e);
+    final response =
+        await httpClient.get('$_baseUrlBarberShop/getAllBarberShops');
+    final body = json.decode(response.body);
+    if (body['status']) {
+      return body['data']
+          .map<BarberShop>((e) => BarberShop.fromJSON(e))
+          .toList();
+    } else {
+      throw Exception('Failed to create course.');
     }
-
-    return null;
   }
 
   Future<List<BarberShop>> searchBarberShop(searchValue) async {
     final response = await httpClient
-        .get(Uri.http(_baseUrlBarberShop, '/searchBarberShop/$searchValue'));
-    if (json.decode(response.body).status == true) {
-      List<BarberShop> barberShops = [];
-      json.decode(response.body).data.forEach((BarberShop barbershop, index) =>
-          {
-            barberShops
-                .add(BarberShop.fromJSON(json.decode(response.body).data))
-          });
-      return barberShops;
+        .get('$_baseUrlBarberShop/searchBarberShop/$searchValue');
+
+    final body = json.decode(response.body);
+    if (body['status']) {
+      return body['data']
+          .map<BarberShop>((e) => BarberShop.fromJSON(e))
+          .toList();
     } else {
       throw Exception('Failed to create course.');
     }

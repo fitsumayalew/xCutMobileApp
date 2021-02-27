@@ -8,6 +8,7 @@ import 'package:xcut_frontend/src/models/models.dart';
 import 'package:xcut_frontend/src/widgets/loading_widget.dart';
 
 import '../utils/token_handler.dart';
+import '../utils/token_handler.dart';
 
 class Appointment extends StatefulWidget {
   @override
@@ -15,42 +16,73 @@ class Appointment extends StatefulWidget {
 }
 
 class _AppointmentState extends State<Appointment> {
-  String userId = '';
-  @override
-  void initState() async {
-    // TODO: implement initState
-    super.initState();
-    this.userId = await getUserId();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BarberShopBloc, BarberShopState>(
-        builder: (context, state) {
-      if (state is BarberShopOperationFailure) {
-        return Text('You have no appointments');
-      }
-      if (state is BarbershopLoading) {
-        BlocProvider.of<BarberShopBloc>(context).add(BarberShopLoad());
-      }
-      if (state is BarbershopLoadSuccess) {
-        List<String> barberShopNames = [];
-        state.barberShops.forEach((e) => {
-              e.appointments.forEach((e) {
-                if (e == this.userId) {
-                  barberShopNames.add(e);
-                }
-              })
-            });
-        return ListView.builder(
-          itemCount: barberShopNames.length,
-          itemBuilder: (context, index) {
-            return tile(barberShopNames[index]);
-          },
-        );
-      }
-      return Loading();
-    });
+    return FutureBuilder(
+        future: TokenHandler.getToken(),
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text('Login to see your appointments.',
+                      style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          letterSpacing: 1.5,
+                          color: Theme.of(context).primaryColor)),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Center(
+                    child: SizedBox(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: RaisedButton(
+                            child: Text(
+                              'Login',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20.0, fontWeight: FontWeight.w600),
+                            ),
+                            color: Theme.of(context).primaryColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                side: BorderSide(color: Colors.grey.shade700)),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/login');
+                            })))
+              ],
+            );
+          } else {}
+
+          return BlocBuilder<BarberShopBloc, BarberShopState>(
+              builder: (context, state) {
+            if (state is BarberShopOperationFailure) {
+              return Text('You have no appointments');
+            }
+            if (state is BarbershopLoading) {
+              BlocProvider.of<BarberShopBloc>(context).add(BarberShopLoad());
+            }
+            if (state is BarbershopLoadSuccess) {
+              List<String> barberShopNames = [];
+              state.barberShops.forEach((e) => {
+                    e.appointments.forEach((e) {
+                      if (e == snapshot.data) {
+                        barberShopNames.add(e);
+                      }
+                    })
+                  });
+              return ListView.builder(
+                itemCount: barberShopNames.length,
+                itemBuilder: (context, index) {
+                  return tile(barberShopNames[index]);
+                },
+              );
+            }
+            return Loading();
+          });
+        });
   }
 }
 

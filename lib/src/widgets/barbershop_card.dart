@@ -8,7 +8,7 @@ class BarberShopCard extends StatelessWidget {
   final String imageUrl;
   final String name;
   // review contains ratings and reviews in a single object
-  final Map<String, dynamic> review;
+  final List<Review> review;
   final DateTime createdAt;
   final String address;
 
@@ -22,6 +22,7 @@ class BarberShopCard extends StatelessWidget {
             arguments: BarberShop(
                 image: imageUrl,
                 name: name,
+                review: review,
                 createdAt: createdAt,
                 address: address))
       },

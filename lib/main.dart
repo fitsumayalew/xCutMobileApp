@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:xcut_frontend/src/bloc/authetication/bloc.dart';
 import 'package:xcut_frontend/src/bloc/barbershop/barbershop_event.dart';
 import 'package:xcut_frontend/src/bloc/barbershop/bloc.dart';
 import 'package:xcut_frontend/src/bloc/user/bloc.dart';
@@ -47,6 +48,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(userRepository: this.userRepository),
+          ),
           BlocProvider(
             create: (context) => UserBloc(userRepository: this.userRepository),
           ),
