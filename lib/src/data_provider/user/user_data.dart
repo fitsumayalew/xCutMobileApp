@@ -27,6 +27,8 @@ class UserDataProvider {
     final body = json.decode(response.body);
     if (body['status']) {
       await TokenHandler.setToken(body['jwt']);
+      await TokenHandler.setUserRole(body['role']);
+      await TokenHandler.setUserId(body['data']['_id']);
       print(body['jwt']);
     } else {
       throw Exception('Failed to create course.');
@@ -48,6 +50,8 @@ class UserDataProvider {
     final body = json.decode(response.body);
     if (body['status']) {
       await TokenHandler.setToken(body['jwt']);
+      await TokenHandler.setUserRole(body['role']);
+      await TokenHandler.setUserId(body['data']['_id']);
       print(body['jwt']);
     } else {
       throw Exception('Failed to create course.');

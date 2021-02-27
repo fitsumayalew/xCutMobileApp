@@ -6,6 +6,10 @@ import 'package:xcut_frontend/src/bloc/user/user_event.dart';
 import 'package:xcut_frontend/src/bloc/user/user_state.dart';
 import 'package:xcut_frontend/src/utils/token_handler.dart';
 
+import '../bloc/user/bloc.dart';
+import '../bloc/user/user_event.dart';
+import '../utils/token_handler.dart';
+
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -105,6 +109,25 @@ class _ProfileState extends State<Profile> {
                         color: Theme.of(context).primaryColor, width: 1.5)),
                 onPressed: () {
                   Navigator.pushNamed(context, '/changePassword');
+                },
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: FlatButton(
+                child: Text('Delete Account',
+                    style: GoogleFonts.poppins(
+                        color: Theme.of(context).primaryColor)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    side: BorderSide(
+                        color: Theme.of(context).primaryColor, width: 1.5)),
+                onPressed: () async {
+                  final userToken = await TokenHandler.getToken();
+                  BlocProvider.of<UserBloc>(context).add(UserDelete(userToken));
+                  Navigator.pushNamed(context, '/');
                 },
               ),
             )

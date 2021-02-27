@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:xcut_frontend/src/bloc/authetication/auth_event.dart';
+import 'package:xcut_frontend/src/bloc/authetication/bloc.dart';
 import 'package:xcut_frontend/src/bloc/user/bloc.dart';
 import 'package:xcut_frontend/src/bloc/user/user_event.dart';
 import 'package:xcut_frontend/src/utils/token_handler.dart';
@@ -131,11 +133,11 @@ class _LoginState extends State<Login> {
                           final form = _formKeyLogin.currentState;
                           if (form.validate()) {
                             form.save();
-                            final UserEvent event = UserLogin(User(
+                            final AuthEvent event = AuthLogin(User(
                                 email: this._user['email'],
                                 password: this._user['password']));
                             print(await TokenHandler.getToken());
-                            BlocProvider.of<UserBloc>(context).add(event);
+                            BlocProvider.of<AuthBloc>(context).add(event);
                             Navigator.pushNamed(context, '/');
                           }
                         },

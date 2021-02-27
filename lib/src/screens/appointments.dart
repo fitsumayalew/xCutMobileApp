@@ -7,12 +7,22 @@ import 'package:xcut_frontend/src/bloc/barbershop/bloc.dart';
 import 'package:xcut_frontend/src/models/models.dart';
 import 'package:xcut_frontend/src/widgets/loading_widget.dart';
 
+import '../utils/token_handler.dart';
+
 class Appointment extends StatefulWidget {
   @override
   _AppointmentState createState() => _AppointmentState();
 }
 
 class _AppointmentState extends State<Appointment> {
+  String userId = '';
+  @override
+  void initState() async {
+    // TODO: implement initState
+    super.initState();
+    this.userId = await getUserId();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BarberShopBloc, BarberShopState>(
@@ -20,12 +30,23 @@ class _AppointmentState extends State<Appointment> {
       if (state is BarberShopOperationFailure) {
         return Text('You have no appointments');
       }
-      if(state is BarbershopLoading) {
+      if (state is BarbershopLoading) {
         BlocProvider.of<BarberShopBloc>(context).add(BarberShopLoad());
       }
       if (state is BarbershopLoadSuccess) {
-        return ListView(
-          children: [tile(state), tile(state)],
+        List<String> barberShopNames = [];
+        state.barberShops.forEach((e) => {
+              e.appointments.forEach((e) {
+                if (e == this.userId) {
+                  barberShopNames.add(e);
+                }
+              })
+            });
+        return ListView.builder(
+          itemCount: barberShopNames.length,
+          itemBuilder: (context, index) {
+            return tile(barberShopNames[index]);
+          },
         );
       }
       return Loading();
@@ -53,4 +74,8 @@ Widget tile(barberShop) {
     subtitle:
         Text('2013-34-34', style: GoogleFonts.poppins(color: Colors.grey)),
   );
+}
+
+getUserId() async {
+  return await TokenHandler.getUserId();
 }

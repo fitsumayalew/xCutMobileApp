@@ -8,6 +8,8 @@ import 'package:xcut_frontend/src/bloc/user/user_event.dart';
 import 'package:xcut_frontend/src/models/barberShop.dart';
 import 'package:xcut_frontend/src/widgets/review.dart';
 
+import '../utils/token_handler.dart';
+
 class BarberShopDetails extends StatefulWidget {
   final BarberShop barberShop;
   BarberShopDetails(this.barberShop);
@@ -18,6 +20,14 @@ class BarberShopDetails extends StatefulWidget {
 class _BarberShopDetailsState extends State<BarberShopDetails> {
   final _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> _user = {};
+  final String userRole = '';
+  @override
+  void initState() async {
+    // TODO: implement initState
+    super.initState();
+    await TokenHandler.getUserRole();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,33 +221,36 @@ class _BarberShopDetailsState extends State<BarberShopDetails> {
               ],
             ),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 10.5,
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-              child: RaisedButton(
-                child: Text(
-                  'Book Appointment',
-                  style: GoogleFonts.poppins(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).primaryColor),
-                ),
-                color: Theme.of(context).primaryColorDark,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    side: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 1.5)),
-                onPressed: () => {
-                  BlocProvider.of<UserBloc>(context)
-                      .add(UserSetAppointment(widget.barberShop.id)),
-                  Navigator.pushNamed(context, '/')
-                },
-              ),
-            ),
-          ),
+          userRole == 'UNVERIFIED_USER'
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height / 10.5,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 10),
+                    child: RaisedButton(
+                      child: Text(
+                        'Book Appointment',
+                        style: GoogleFonts.poppins(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      color: Theme.of(context).primaryColorDark,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          side: BorderSide(
+                              color: Theme.of(context).primaryColor,
+                              width: 1.5)),
+                      onPressed: () => {
+                        BlocProvider.of<UserBloc>(context)
+                            .add(UserSetAppointment(widget.barberShop.id)),
+                        Navigator.pushNamed(context, '/')
+                      },
+                    ),
+                  ),
+                )
+              : null,
         ],
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
